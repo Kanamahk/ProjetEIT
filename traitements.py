@@ -11,11 +11,8 @@ def faireTraitement(data):
         else:
             i = i + 1
         i = i + 1
-    return ret
-	data = basicTraitement(data)
+    return basicTraitement(data)
 
-	return data
-	
 def basicTraitement(data):
 	for line in data:
 		line = line.lower()
