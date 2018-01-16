@@ -8,6 +8,8 @@ Outputs a table of single-words medical terms
 with the minimum length of (minWordLen)
 """
 def parseMedicalTerms(inFile, minWordLen=5, printProgress=True):
+	#import pdb
+	#pdb.set_trace()
 	if printProgress:
 		print("Parsing medical terms dictionary")
 	with open(inFile) as f :
@@ -42,3 +44,4 @@ def correctMistakes(terms, string, threshold=95, minWordLen=5):
 				if fuzz.ratio(string[i],j) >= threshold :
 					string[i] = j
 					break
+	return string
