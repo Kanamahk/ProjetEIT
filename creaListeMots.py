@@ -5,6 +5,7 @@ import os
 import sys
 import csv
 from traitements import *
+from collections import OrderedDict
 
 maSuperExtension = ".passurgit"
 
@@ -73,6 +74,8 @@ if __name__=="__main__":
 	data = faireTraitements(data)
 	
 	monDic = creationListeMots(data)
-	monDic = gardeLesPetitsMots(monDic, n)
+	#monDic = gardeLesPetitsMots(monDic, n)
+	
+	monDic = OrderedDict(sorted(monDic.items(), key=lambda t: t[1]))
 	
 	writeDic(monDic, "monDicDeMotsInutile"+maSuperExtension)
