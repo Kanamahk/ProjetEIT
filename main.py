@@ -4,11 +4,12 @@
 import os
 import sys
 from parser import *
-from readFileFonctions import getFileByLine
+#from readFileFonctions import getFileByLine
 #from writeInFileFunctions import write_dict
 
 #reviewsdirectory = "./reviews"
 
+maSuperExtension = ".passurgit"
 
 if __name__=="__main__":
 	if "-s" in sys.argv :
@@ -62,10 +63,10 @@ if __name__=="__main__":
 	evalDataParsed = dataToUlist(evalData, DictTag, ngramW, ngramCTraitement, ngramC)
 
 	
-	writeFile(trainDataParsed, "trainData")
-	writeFile(evalDataParsed, "evalData")
+	writeFile(trainDataParsed, "trainData"+maSuperExtension)
+	writeFile(evalDataParsed, "evalData"+maSuperExtension)
 	
 	if save : 
-		writeModel(DictTag, modelName)
+		writeModel(DictTag, modelName+maSuperExtension)
 	
 	

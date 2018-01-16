@@ -5,6 +5,13 @@ from traitements import *
 import os
 import csv
 
+def getFileByLine(fileName): 
+	file_pointer = open(fileName, "r")
+	contents = []
+	for line in file_pointer.readlines():
+		contents.append(line)
+	file_pointer.close()
+	return contents
 
 def parseCSV(fichier, boolCodeSimplifie):
 	reader = csv.reader(fichier, delimiter=";")
@@ -41,10 +48,7 @@ retourne un dictionnaire prenant en cle un code et en element une liste des elem
 def dataToUlist(data, DictTag, ngramW, ngramCTraitement, ngramC):
 	tupleList = []
 	
-	#
-	# Inserer traitement de data
-	#
-	data = faireTraitements(data) #ou qqchose comme ça
+	data = faireTraitements(data)
 	
 	for line in data:
 		listeTag = []
