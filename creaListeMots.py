@@ -71,7 +71,7 @@ if __name__=="__main__":
 	fileContent = getFileByLine(file)
 	data = parseCSV(fileContent, True)
 	
-	data = faireTraitements(data)
+	data = faireTraitements(data, True)
 	
 	monDic = creationListeMots(data)
 	#monDic = gardeLesPetitsMots(monDic, n)

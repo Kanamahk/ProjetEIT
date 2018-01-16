@@ -1,15 +1,16 @@
 #-*-coding:utf-8-*-
 import re 
 import collections
+from medicalTerms import *
 
-def faireTraitements(data):
+def faireTraitements(data, useDico):
 	data2=[]
 	for line in data:
 		treatedLine = basicTreatments(line[0])
 		data2.append((treatedLine, line[1], line[2]))
 		
 	if useDico :
-		data2 = useDico(data2)
+		data2 = useDicoFct(data2)
 		
 	return data2
 
@@ -40,25 +41,22 @@ def basicTreatments(line):
 		
 	return line
 
-def useDico(data):
-	from medicalTerms import *
-		medicalTerms = parseMedicalTerms("medicalTerms", 5)
-		
-		print("Correcting mistakes")
-		
-		datalength = len(data) 
-		
-		buf = []
-		index = 0
-		for line in data:
-			for i in line[0]:
-				buf.append((correctMistakes(medicalTerms, i[0], 95), i[1],i[2]))
-				index+=1
-				print(progressBar(index, datalength, 100), end="\r")
-			data = buf
-			data2.append((buf, line[1], line[2]))
-		print(" "*100, end="\r")
-	return data2
+def useDicoFct(data):
+	medicalTerms = parseMedicalTerms("medicalTerms", 5)
+	
+	print("Correcting mistakes")
+	
+	datalength = len(data) 
+	
+	buf = []
+	index = 0
+	for i in data:
+		buf.append((correctMistakes(medicalTerms, i[0], 95), i[1],i[2]))
+		index+=1
+		print(progressBar(index, datalength, 100), end="\r")
+
+	print(" "*100, end="\r")
+	return buf
 
 def supressionMotsInutiles(line):
 
