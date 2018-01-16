@@ -23,7 +23,7 @@ def basicTreatments(line):
 	
 def supressionMotsInutiles(line):
 
-	motsInutiles = ["le", "la", "les", "du", "de", "des", "au", "aux"]
+	#motsInutiles = ["le", "la", "les", "du", "de", "des", "au", "aux"]
 	
 	return line
 	

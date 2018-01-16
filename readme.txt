@@ -24,6 +24,8 @@ creer les fichiers d'entrainements et d'avaluation :
 
 commande pour faire tourner notre programme
 	python3 main.py 
+					-s "modelName" //sauvegarder le model
+					-m "model" // utiliser un model existant
 					-t pathToTrainFile ("../CLEFeHealth2017Task1_training_FR1/corpus/train/train.csv" par defaut)
 					-e pathToEvalFile ("../CLEFeHealth2017Task1_training_FR1/corpus/train/train.csv" par defaut)
 					-ngramW NumberOfWord (optional; default is 1)

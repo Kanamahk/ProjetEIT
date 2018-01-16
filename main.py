@@ -11,7 +11,20 @@ from readFileFonctions import getFileByLine
 
 
 if __name__=="__main__":
-
+	if "-s" in sys.argv :
+		save = True
+		modelName = sys.argv[sys.argv.index("-t")+1]
+	else:
+		save = False
+		modelName = ""
+		
+	if "-m" in sys.argv :
+		model = sys.argv[sys.argv.index("-t")+1]
+		DictTag = parseModel(model)
+	else:
+		DictTag = {}
+		DictTag["enfant"] = 'u0'
+	
 	# training file	
 	if "-t" in sys.argv :
 		trainFile = sys.argv[sys.argv.index("-t")+1]
@@ -45,13 +58,14 @@ if __name__=="__main__":
 	traindata = parseCSV(trainFileContent, True)
 	evalData = parseCSV(evalFileContent, True)
 	
-	DictTag = {}
-	DictTag["enfant"] = 'u0'
 	trainDataParsed = dataToUlist(traindata, DictTag, ngramW, ngramCTraitement, ngramC)
 	evalDataParsed = dataToUlist(evalData, DictTag, ngramW, ngramCTraitement, ngramC)
 
 	
 	writeFile(trainDataParsed, "trainData")
 	writeFile(evalDataParsed, "evalData")
+	
+	if save : 
+		writeModel(DictTag, modelName)
 	
 	

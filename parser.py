@@ -20,7 +20,19 @@ def parseCSV(fichier, boolCodeSimplifie):
 			
 		tokens.append((row[6], label, estEnfant))
 	return tokens
+	
+def parseModel(model):	
+	file_pointer = open(fileName, "r")
+	DictTag = {}
+	for (word, ucode) in file_pointer.readlines().split(":"):
+		DictTag[word] = ucode
+	file_pointer.close()
+	return DictTag
 
+def writeModel(DictTag, filename):
+	with open(filename, "w+") as filepointer:
+		for key in DictTag.key():
+			filepointer.write(str(key) + ":" + str(DictTag[key]+"\n"))
 
 '''
 prend une liste de tuple contenant en premier element une string contenant les causes et en deuxieme element une string contenant le code associe
