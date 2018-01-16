@@ -66,7 +66,7 @@ if __name__=="__main__":
 	if "-n" in sys.argv :
 		n = int(sys.argv[sys.argv.index("-f")+1])
 	else:
-		n = 3
+		n = 5
 	
 	fileContent = getFileByLine(file)
 	data = parseCSV(fileContent, True)
@@ -74,7 +74,7 @@ if __name__=="__main__":
 	data = faireTraitements(data, True)
 	
 	monDic = creationListeMots(data)
-	#monDic = gardeLesPetitsMots(monDic, n)
+	monDic = gardeLesPetitsMots(monDic, n)
 	
 	monDic = OrderedDict(sorted(monDic.items(), key=lambda t: t[1]))
 	

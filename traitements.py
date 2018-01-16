@@ -43,11 +43,9 @@ def basicTreatments(line):
 
 def useDicoFct(data):
 	medicalTerms = parseMedicalTerms("medicalTerms", 5)
-	
+		
 	print("Correcting mistakes")
-	
 	datalength = len(data) 
-	
 	buf = []
 	index = 0
 	for i in data:
@@ -59,8 +57,11 @@ def useDicoFct(data):
 	return buf
 
 def supressionMotsInutiles(line):
-
-	#motsInutiles = ["le", "la", "les", "du", "de", "des", "au", "aux"]
+	motsInutiles = ["le", "la", "les", "du", "de", "des", "au", "aux", "a", "avec", "et", "en", "l", "un", "une", "c"]
+	
+	for word in line:
+		if word in motsInutiles:
+			word = ""
 	
 	return line
 	
