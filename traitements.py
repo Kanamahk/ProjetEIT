@@ -51,9 +51,9 @@ def useDicoFct(data):
 	for i in data:
 		buf.append((correctMistakes(medicalTerms, i[0], 95), i[1],i[2]))
 		index+=1
-		print(progressBar(index, datalength, 100), end="\r")
+		print(progressBar(index, datalength, 50), end="\r")
 
-	print(" "*100, end="\r")
+	print(" "*50, end="\r")
 	return buf
 
 def supressionMotsInutiles(line):
