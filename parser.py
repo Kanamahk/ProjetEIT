@@ -6,67 +6,6 @@ import os
 import csv
 
 
-'''
-datasDirectory = "./data"
-
-def getFisherDict(params):
-	if len(params) > 0:
-		if os.path.exists("./fisher"):
-			myFisherFileName = os.listdir("./fisher")
-			if (len(myFisherFileName) == 1) && (myFisherFileName[0] == "fisher.txt"):
-				return FisherDictFromFile()		
-	return createFisherFile(params)
-
-def FisherDictFromFile():
-	dictionary = {}
-	with open("fisher/fisher.txt", "r") as filepointer:
-		for line in filepointer.readlines():
-			item = line.strip().split(" ; ")
-			dictionary[item[0]] = (item[1], item[2])
-	return dictionary
-
-
-def createlisteFisherDict(params): #param est une liste 
-	if os.path.exists("datasDirectory"):
-		myDatasFileName = os.listdir("datasDirectory")
-		myDatas = []
-		dictionary = {}
-		for r in myDatasFileName:
-			myDatas.append(getFileByLine(reviewsdirectory + '/' + r))
-		for r in myDatas:
-			dictionary = addDataToFisher(r, dictionary, params)
-		return dictionary
-
-def WriteFisherFile(dict):
-	with open("fisher", "w+") as filepointer:
-		for (wordInDict, ident) in dict.items():
-			filepointer.write(wordInDict + ";" + ident + "\n")
-	
-
-
-
-
-def addDataToFisher(data, currentFisher, params):   #param est une liste 
-	for param in params:
-		if param == "words":
-			currentFisher = addWordFromDataToFisher(data, currentFisher)
-		if param == "bigramw":
-		if param == "trigramc":
-	return currentFisher
-
-
-def addWordFromDataToFisher(data, currentFisher):
-	words = data.split(" ")
-	
-	for word in words:
-		if not(word in words.item()):
-			currentFisher.append({word:len(currentFisher)})
-	return currentFisher
-
-
-
-'''
-
 def parseCSV(fichier, boolCodeSimplifie):
 	reader = csv.reader(fichier, delimiter=";")
 	tokens=[]
@@ -81,25 +20,6 @@ def parseCSV(fichier, boolCodeSimplifie):
 			
 		tokens.append((row[6], label, estEnfant))
 	return tokens
-'''	
-def parseCSVTrain(fichier):
-	reader = csv.reader(fichier, delimiter=";")
-	tokens=[]
-	for row in reader:
-		if len(row[-1]) > 3:	
-			label = row[-1][:3]
-		else:
-			label = row[-1]
-		tokens.append((row[6], label))
-	return tokens
-
-def parseCSVEval(fichier):
-	reader = csv.reader(fichier, delimiter=";")
-	tokens=[]
-	for row in reader:
-		tokens.append(row[6])
-	return tokens
-'''
 
 
 '''
@@ -112,7 +32,7 @@ def dataToUlist(data, DictTag, ngramW, ngramCTraitement, ngramC):
 	#
 	# Inserer traitement de data
 	#
-	data = faireTraitement(data) #ou qqchose comme ça
+	data = faireTraitements(data) #ou qqchose comme ça
 	
 	for line in data:
 		listeTag = []
@@ -173,22 +93,6 @@ def writeFile(trainTupleList, filename):
 			for ucode in Tuple[1]:
 				filepointer.write(str(ucode) + " ")
 			filepointer.write(str(Tuple[0] if not Tuple[0] =='' else "NULL") +"\n")
-
-			'''
-def writeTrainFile(trainTupleList):
-	with open("trainData", "w+") as filepointer:
-		for Tuple in trainTupleList:
-			for ucode in Tuple[1]:
-				filepointer.write(str(ucode) + " ")
-			filepointer.write(": " + str(Tuple[0]) +"\n")
-
-def writeEvalFile(evalList):
-	with open("evalData", "w+") as filepointer:
-		for line in evalList:
-			for ucode in line:
-				filepointer.write(str(ucode) + " ")
-			filepointer.write("\n")
-'''
 
 
 
