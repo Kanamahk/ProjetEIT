@@ -74,7 +74,12 @@ def ngramWord(causes, DictTag, n):
 	if n > 1:
 		words = ["DEBUT_PHRASE_TOKEN"] + words + ["FIN_PHRASE_TOKEN"]
 		
-	for word in words:
+	#for word in words:
+	for i in range(0, len(words) - n):
+		word = ""
+		for j in range(0, n):
+			word += words[i+j]
+		
 		if word not in DictTag.keys():
 			DictTag[word] = 'u' + str(len(DictTag))
 
