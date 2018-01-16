@@ -45,10 +45,10 @@ def writeModel(DictTag, filename):
 prend une liste de tuple contenant en premier element une string contenant les causes et en deuxieme element une string contenant le code associe
 retourne un dictionnaire prenant en cle un code et en element une liste des elements à utiliser
 '''
-def dataToUlist(data, DictTag, ngramW, ngramCTraitement, ngramC):
+def dataToUlist(data, DictTag, ngramW, ngramCTraitement, ngramC, useDico):
 	tupleList = []
 	
-	data = faireTraitements(data)
+	data = faireTraitements(data, useDico)
 	
 	for line in data:
 		listeTag = []

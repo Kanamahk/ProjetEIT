@@ -61,35 +61,9 @@ if __name__=="__main__":
 
 	traindata = parseCSV(trainFileContent, True)
 	evalData = parseCSV(evalFileContent, True)
-	
-	
-	if useDico :
-		from medicalTerms import *
-		medicalTerms = parseMedicalTerms("medicalTerms", 5)
 		
-		print("Correcting mistakes")
-		
-		datalength = len(traindata) + len(evalData)
-		
-		buf = []
-		index = 0
-		for i in traindata:
-			buf.append((correctMistakes(medicalTerms, i[0], 95), i[1],i[2]))
-			index+=1
-			print(progressBar(index, datalength, 50), end="\r")
-		traindata = buf
-		buf = []
-		
-		for i in evalData:
-			buf.append((correctMistakes(medicalTerms, i[0], 95), i[1],i[2]))
-			index+=1
-			print(progressBar(index, datalength, 50), end="\r")
-		evalData = buf
-		
-		print(" "*50, end="\r")
-		
-	trainDataParsed = dataToUlist(traindata, DictTag, ngramW, ngramCTraitement, ngramC)
-	evalDataParsed = dataToUlist(evalData, DictTag, ngramW, ngramCTraitement, ngramC)
+	trainDataParsed = dataToUlist(traindata, DictTag, ngramW, ngramCTraitement, ngramC, useDico)
+	evalDataParsed = dataToUlist(evalData, DictTag, ngramW, ngramCTraitement, ngramC, useDico)
 
 	
 	writeFile(trainDataParsed, "trainData"+maSuperExtension)

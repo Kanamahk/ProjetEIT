@@ -7,6 +7,10 @@ def faireTraitements(data):
 	for line in data:
 		treatedLine = basicTreatments(line[0])
 		data2.append((treatedLine, line[1], line[2]))
+		
+	if useDico :
+		data2 = useDico(data2)
+		
 	return data2
 
 def basicTreatments(line):
@@ -20,6 +24,9 @@ def basicTreatments(line):
 		line = re.sub("\)([^ ])", r" ) ", line) # separate ) from following word if a space 
 		line = re.sub("([^ ])\)", r" ) ", line) # separate ) from following word if a space
 		
+		line = re.sub("\+([^ ])", r" + ", line) # separate ) from following word if a space 
+		line = re.sub("([^ ])\+", r" + ", line) # separate ) from following word if a space
+		
 		line = re.sub("[,;:!?.-]", '', line) #choix d'echanger le tiret par un vide
 		
 		line = re.sub("[éèêë]", 'e', line)
@@ -32,7 +39,27 @@ def basicTreatments(line):
 		line = re.sub("[ ]+", ' ', line)
 		
 	return line
-	
+
+def useDico(data):
+	from medicalTerms import *
+		medicalTerms = parseMedicalTerms("medicalTerms", 5)
+		
+		print("Correcting mistakes")
+		
+		datalength = len(data) 
+		
+		buf = []
+		index = 0
+		for line in data:
+			for i in line[0]:
+				buf.append((correctMistakes(medicalTerms, i[0], 95), i[1],i[2]))
+				index+=1
+				print(progressBar(index, datalength, 100), end="\r")
+			data = buf
+			data2.append((buf, line[1], line[2]))
+		print(" "*100, end="\r")
+	return data2
+
 def supressionMotsInutiles(line):
 
 	#motsInutiles = ["le", "la", "les", "du", "de", "des", "au", "aux"]
