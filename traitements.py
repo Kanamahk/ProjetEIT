@@ -13,12 +13,20 @@ def basicTreatments(line):
 	line = line.lower()
 	
 	line = re.sub("[\'_]", ' ', line)
-	line = re.sub("[`â€˜â€™â‰ªâ‰«â€œâ€,;:!?./-\(\) &]", '', line) #choix d'echanger le tiret par un vide
+
+	line = re.sub(" \(", r" \( ", line) # separate ( from following word if a space 
+	line = re.sub("([^ ])\) ", r" \) ", line) # separate ) from following word if a space
 	
-	line = re.sub("[éèê]", 'e', line)
+	line = re.sub("[;:!?.-]", '', line) #choix d'echanger le tiret par un vide
+	
+	line = re.sub("[éèêë]", 'e', line)
 	line = re.sub("[îï]", 'i', line)
-	line = re.sub("[ô]", 'o', line)
+	line = re.sub("[ôö]", 'o', line)
+	line = re.sub("[àâ]", 'a', line)
+	line = re.sub("ç", 'c', line)
 	line = re.sub("[œ]", 'oe', line)
+	
+	line = re.sub(" ", '', line)
 		
 	return line
 	
