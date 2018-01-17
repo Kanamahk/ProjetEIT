@@ -36,16 +36,11 @@ def parseModel(model):
 	file_pointer.close()
 	return DictTag
 
-def writeModel(DictTag, filename):
-	with open(filename, "w+") as filepointer:
-		for key in DictTag.key():
-			filepointer.write(str(key) + ":" + str(DictTag[key]+"\n"))
-
 '''
 prend une liste de tuple contenant en premier element une string contenant les causes et en deuxieme element une string contenant le code associe
 retourne un dictionnaire prenant en cle un code et en element une liste des elements à utiliser
 '''
-def dataToUlist(data, DictTag, ngramW, ngramCTraitement, ngramC, useDico):
+def dataToUlist(data, DictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese):
 	tupleList = []
 	
 	data = faireTraitements(data, useDico)
@@ -54,15 +49,18 @@ def dataToUlist(data, DictTag, ngramW, ngramCTraitement, ngramC, useDico):
 		listeTag = []
 		if line[2]:
 			listeTag.append(DictTag["enfant"])
-		listeTag = listeTag + traitementCauses(line[0], DictTag, ngramW, ngramCTraitement, ngramC)
+		listeTag = listeTag + traitementCauses(line[0], DictTag, ngramW, ngramCTraitement, ngramC, useParenthese)
 		
 		tupleList.append((line[1], listeTag))
 	return tupleList;
 
-def traitementCauses(causes, DictTag, ngramW, ngramCTraitement, ngramC):
+def traitementCauses(causes, DictTag, ngramW, ngramCTraitement, ngramC, useParenthese):
 	liste = []
 	
 	liste += ngramWord(causes, DictTag, ngramW)
+	
+	if useParenthese:
+		liste += parenthese(causes, DictTag)
 	
 	if ngramCTraitement:
 		liste += ngramChar(causes, DictTag, ngramC)
@@ -79,9 +77,11 @@ def ngramWord(causes, DictTag, n):
 		words = ["DEBUT_PHRASE_TOKEN"] + words + ["FIN_PHRASE_TOKEN"]
 		
 	#for word in words:
-	for i in range(0, len(words) - n):
+	for i in range(0, len(words) - (n-1)):
 		word = ""
 		for j in range(0, n):
+			if j != 0:
+				word += "_"
 			word += words[i+j]
 		
 		if word not in DictTag.keys():
@@ -106,7 +106,22 @@ def ngramChar(causes, DictTag, n):
 			causeTmp = causeTmp[1:]
 			liste.append(DictTag[ngram])
 	return liste + ngramChar(causes, DictTag, n-1)
+
 	
+def parenthese(causes, DictTag):
+	liste = []	
+	words = causes.split(" ")
+	
+	if "(" in words or ")" in words:
+		do = False
+		for word in words:
+			if word == "(":
+				do = True
+			if do:
+				if word+"_PARENTHESE" not in DictTag.keys():
+					DictTag[word+"_PARENTHESE"] = 'u' + str(len(DictTag))
+				liste.append(DictTag[word+"_PARENTHESE"])
+	return liste
 	
 def writeFile(trainTupleList, filename):
 	with open(filename, "w+") as filepointer:
@@ -115,6 +130,9 @@ def writeFile(trainTupleList, filename):
 				filepointer.write(str(ucode) + " ")
 			filepointer.write(str(Tuple[0] if not Tuple[0] =='' else "NULL") +"\n")
 
-
+def writeModel(DictTag, filename):
+	with open(filename, "w+") as filepointer:
+		for key in DictTag.keys():
+			filepointer.write(str(key) + ":" + str(DictTag[key]+"\n"))
 
 

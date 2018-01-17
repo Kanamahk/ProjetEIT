@@ -14,10 +14,10 @@ maSuperExtension = ".passurgit"
 if __name__=="__main__":
 	if "-s" in sys.argv :
 		save = True
-		modelName = sys.argv[sys.argv.index("-t")+1]
+		modelName = sys.argv[sys.argv.index("-s")+1]
 	else:
 		save = False
-		modelName = ""
+		modelName = "modelUcode"
 		
 	if "-m" in sys.argv :
 		model = sys.argv[sys.argv.index("-t")+1]
@@ -55,15 +55,25 @@ if __name__=="__main__":
 		useDico = True
 	else :
 		useDico = False
+		
+	if "-p" in sys.argv :
+		useParenthese = True
+	else :
+		useParenthese = False
+	
+	if "-cs" in sys.argv :
+		codeSimplifie = True
+	else :
+		codeSimplifie = False
 	
 	trainFileContent = getFileByLine(trainFile)
 	evalFileContent = getFileByLine(evalFile)
 
-	traindata = parseCSV(trainFileContent, True)
-	evalData = parseCSV(evalFileContent, True)
+	traindata = parseCSV(trainFileContent, codeSimplifie)
+	evalData = parseCSV(evalFileContent, codeSimplifie)
 		
-	trainDataParsed = dataToUlist(traindata, DictTag, ngramW, ngramCTraitement, ngramC, useDico)
-	evalDataParsed = dataToUlist(evalData, DictTag, ngramW, ngramCTraitement, ngramC, useDico)
+	trainDataParsed = dataToUlist(traindata, DictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese)
+	evalDataParsed = dataToUlist(evalData, DictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese)
 
 	
 	writeFile(trainDataParsed, "trainData"+maSuperExtension)

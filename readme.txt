@@ -30,8 +30,12 @@ commande pour faire tourner notre programme
 					-e pathToEvalFile ("../CLEFeHealth2017Task1_training_FR1/corpus/train/train.csv" par defaut)
 					-ngramW NumberOfWord (optional; default is 1)
 					-ngramC NumberOfChar (optional)
+					-dico
+					-p
 					
 	les fichiers creer ne doivent absolument pas etre push sur github
+	
+	python3 main.py -t "..\CLEFeHealth2017Task1_training_FR1\corpus\train\train.csv" -e "..\CLEFeHealth2017Task1_training_FR1\corpus\train\eval.csv" -s "modelUcode" -ngramW 3 -dico -p
 
 commandes wapiti
 	commande pour entrainer le modele

@@ -27,8 +27,8 @@ classes = {}
 
 for i in range(len(machine)):
 	# get a list of classes
-	o = original[i].split(":")[1]
-	m = machine[i].split(":")[1]
+	o = original[i].split()[-1]
+	m = machine[i].split()[-1]
 	o = o.split()
 	m = m.split()
 	
@@ -56,12 +56,12 @@ for i in range(len(machine)):
 # precision
 # recall
 stats = {}
-
+print(len(classes))
 for i in classes.items() :
 	stats[i[0]] = [0.0,0.0,0.0]
 	# (FN + FP) / N
 	try:
-		stats[i[0]][0] = 1-i[1][1] / i[1][0]
+		stats[i[0]][0] = (1-i[1][1]) / i[1][0]
 	except ZeroDivisionError:
 		stats[i[0]][0] = 1
 	# VP / (VP + FP)
@@ -74,15 +74,18 @@ for i in classes.items() :
 		stats[i[0]][2] = i[1][1] / (i[1][1]+ (i[1][0]-i[1][1])) #FIXME : I think I messed up
 	except ZeroDivisionError:
 		stats[i[0]][2] = 1
-	
+
+
 # then we iterate through to average those to get a global idea
 
 averages = [0.0,0.0,0.0]
+
 
 for i in stats.items() :
 	averages[0] += i[1][0]
 	averages[1] += i[1][1]
 	averages[2] += i[1][2]
+
 	
 averages[0] /= len(stats)
 averages[1] /= len(stats)
