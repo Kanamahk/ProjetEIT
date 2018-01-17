@@ -39,13 +39,12 @@ commande pour faire tourner notre programme
 
 commandes wapiti
 	commande pour entrainer le modele
-	../wapiti-1.5.0/wapiti train --me -a rprop -d evalData -1 0.5 trainData model
+	../wapiti-1.5.0/wapiti train --me -a rprop -1 0.5 trainData.passurgit model
 
 	differentes commandes pour evaluer le modele et recuperation des log avec pipe
-	../wapiti-1.5.0/wapiti label --me -m model evalData | head
+	../wapiti-1.5.0/wapiti label --me -m model evalData.passurgit -c > machine-labeled
 
-	../wapiti-1.5.0/wapiti label --me -m model evalData /dev/null -c
-
-	../wapiti-1.5.0/wapiti label --me -m model evalData -s | head
-
-	../wapiti-1.5.0/wapiti label --me -m model evalData -p -s -n 3 | less  (on recupere les 3 premiers guess)
+	../wapiti-1.5.0/wapiti label --me -m model evalData.passurgit -c -n 3 > machine-labeled  (on recupere les 3 premiers guess)
+	
+commande pour calculer taux erreur, precision, rappel
+	python3 parseResults.py evalData.passurgit machine-labeled
