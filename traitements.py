@@ -3,14 +3,28 @@ import re
 import collections
 from medicalTerms import *
 
-def faireTraitements(data, useDico):
+def faireTraitements(data, useDico=None):
 	data2=[]
 	for line in data:
 		treatedLine = basicTreatments(line[0])
 		data2.append((treatedLine, line[1], line[2]))
-		
-	if useDico :
-		data2 = useDicoFct(data2)
+	
+	if useDico != None:
+		print("Correcting mistakes")
+		#import pdb
+		#pdb.set_trace()
+		for i in range(len(data2)):
+			buf=""
+			sentence = data2[i][0].split()
+			for j in range(len(sentence)):
+				try:
+					buf+=" "+useDico[sentence[j]]
+				except KeyError:
+					buf+=" "+sentence[j]
+			buf.strip()
+			data2[i]=(buf, data2[i][1], data2[i][2])
+			print(progressBar(i, len(data2), 50), end="\r")
+		print(" "*50, end="\r")
 		
 	return data2
 
@@ -43,18 +57,8 @@ def basicTreatments(line):
 
 def useDicoFct(data):
 	medicalTerms = parseMedicalTerms("medicalTerms", 5)
-		
-	print("Correcting mistakes")
-	datalength = len(data) 
-	buf = []
-	index = 0
-	for i in data:
-		buf.append((correctMistakes(medicalTerms, i[0], 95), i[1],i[2]))
-		index+=1
-		print(progressBar(index, datalength, 50), end="\r")
-
-	print(" "*50, end="\r")
-	return buf
+	
+	return buildSubstitutionTable(medicalTerms, data,{},95,5) 
 
 def supressionMotsInutiles(line):
 	motsInutiles = ["le", "la", "les", "du", "de", "des", "au", "aux", "a", "avec", "et", "en", "l", "un", "une", "c"]
