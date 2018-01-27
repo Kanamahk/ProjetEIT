@@ -1,10 +1,12 @@
 # functions for exploiting a medical terms dictionary for reducing spelling mistakes
 
 from utility import *
-from fuzzywuzzy import fuzz
-
+try:
+	fuzzywuzzyAvailable = True
+	from fuzzywuzzy import fuzz
+except ImportError:
+	fuzzywuzzyAvailable = False
 medicalSet = None
-
 """
 Outputs a table of single-words medical terms
 with the minimum length of (minWordLen)
@@ -34,9 +36,8 @@ def parseMedicalTerms(inFile, minWordLen=5, printProgress=True):
 		print(" "*50, end="\r")
 	
 	medicalSet = terms
-	
+	print(len(terms))
 	return terms
-
 
 """
 Loops through words in the given string and replaces them with a term from
@@ -46,11 +47,28 @@ Then returns the corrected string
 Requires fuzzywuzzy :
 pip3 install fuzzywuzzy python-Levenshtein
 """
-def correctMistakes(terms, string, threshold=95, minWordLen=5):
-	for i in range(len(string)):
-		if len(string[i])>=minWordLen :
-			for j in terms:
-				if fuzz.ratio(string[i],j) >= threshold :
-					string[i] = j
-					break
-	return string
+def buildSubstitutionTable(terms, string, existingTable={}, threshold=95,minWordLen=5):
+	global fuzzywuzzyAvailable # hate this school
+	if not fuzzywuzzyAvailable:
+		print("WARNING : fuzzywuzzy is unavailable, no actual results !")
+	table = existingTable
+	#import pdb
+	#pdb.set_trace()
+	splitString = string#.split()
+	for i in range(len(splitString)):
+		print(progressBar(i, len(terms), 50), end="\r")
+		if len(splitString[i])>=minWordLen :
+			if splitString[i] not in table:
+				if splitString[i] not in terms:
+					for j in terms:
+						if fuzzywuzzyAvailable:
+							if fuzz.ratio(splitString[i],j) >= threshold :
+								table[splitString[i]] = j
+								break
+						else:
+							break
+							
+				else:
+					table[string[i]] = splitString[i]
+	print(" "*50, end="\r")
+	return table

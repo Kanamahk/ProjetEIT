@@ -21,10 +21,10 @@ if __name__=="__main__":
 		
 	if "-m" in sys.argv :
 		model = sys.argv[sys.argv.index("-t")+1]
-		DictTag = parseModel(model)
+		dictTag = parseModel(model)
 	else:
-		DictTag = {}
-		DictTag["enfant"] = 'u0'
+		dictTag = {}
+		dictTag["enfant"] = 'u0'
 	
 	# training file	
 	if "-t" in sys.argv :
@@ -51,11 +51,6 @@ if __name__=="__main__":
 		ngramCTraitement = False
 		ngramC = 0
 		
-	if "-dico" in sys.argv :
-		useDico = True
-	else :
-		useDico = False
-		
 	if "-p" in sys.argv :
 		useParenthese = True
 	else :
@@ -69,17 +64,23 @@ if __name__=="__main__":
 	trainFileContent = getFileByLine(trainFile)
 	evalFileContent = getFileByLine(evalFile)
 
-	traindata = parseCSV(trainFileContent, codeSimplifie)
+	trainData = parseCSV(trainFileContent, codeSimplifie)
 	evalData = parseCSV(evalFileContent, codeSimplifie)
+
+	if "-dico" in sys.argv :
+		useDico = useDicoFct(trainData+evalData, sys.argv[sys.argv.index("-dico")+1])
+	else :
+		useDico = None
 		
-	trainDataParsed = dataToUlist(traindata, DictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese)
-	evalDataParsed = dataToUlist(evalData, DictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese)
+	
+	trainDataParsed = dataToUlist(trainData, dictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese)
+	evalDataParsed = dataToUlist(evalData, dictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese)
 
 	
 	writeFile(trainDataParsed, "trainData"+maSuperExtension)
 	writeFile(evalDataParsed, "evalData"+maSuperExtension)
 	
 	if save : 
-		writeModel(DictTag, modelName+maSuperExtension)
+		writeModel(dictTag, modelName+maSuperExtension)
 	
 	
