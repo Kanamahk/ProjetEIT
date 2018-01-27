@@ -68,7 +68,7 @@ if __name__=="__main__":
 	evalData = parseCSV(evalFileContent, codeSimplifie)
 
 	if "-dico" in sys.argv :
-		useDico = useDicoFct(trainData+evalData)
+		useDico = useDicoFct(trainData+evalData, sys.argv[sys.argv.index("-dico")+1])
 	else :
 		useDico = None
 		

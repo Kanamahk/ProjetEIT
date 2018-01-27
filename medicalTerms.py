@@ -36,7 +36,7 @@ def parseMedicalTerms(inFile, minWordLen=5, printProgress=True):
 		print(" "*50, end="\r")
 	
 	medicalSet = terms
-	
+	print(len(terms))
 	return terms
 
 """
@@ -52,18 +52,23 @@ def buildSubstitutionTable(terms, string, existingTable={}, threshold=95,minWord
 	if not fuzzywuzzyAvailable:
 		print("WARNING : fuzzywuzzy is unavailable, no actual results !")
 	table = existingTable
-	for i in range(len(string)):
-		if len(string[i])>=minWordLen :
-			if string[i] not in table:
-				if string[i] not in terms:
+	#import pdb
+	#pdb.set_trace()
+	splitString = string#.split()
+	for i in range(len(splitString)):
+		print(progressBar(i, len(terms), 50), end="\r")
+		if len(splitString[i])>=minWordLen :
+			if splitString[i] not in table:
+				if splitString[i] not in terms:
 					for j in terms:
-						if fuzzyWuzzyAvailable:
-							if fuzz.ratio(string[i],j) >= threshold :
-								table[string[i]] = j
+						if fuzzywuzzyAvailable:
+							if fuzz.ratio(splitString[i],j) >= threshold :
+								table[splitString[i]] = j
 								break
 						else:
 							break
 							
 				else:
-					table[string[i]] = string[i]
+					table[string[i]] = splitString[i]
+	print(" "*50, end="\r")
 	return table

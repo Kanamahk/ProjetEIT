@@ -50,10 +50,13 @@ def gardeLesPetitsMots(dic, n):
 			
 	return dic2
 	
-def writeDic(dic, filename):
+def writeDic(dic, filename, number=True):
 	with open(filename, "w+") as filepointer:
 		for key in dic.keys():
-			filepointer.write(str(key) + " : " + str(dic[key])+"\n")
+			if number:
+				filepointer.write(str(key) + " : " + str(dic[key])+"\n")
+			else:
+				filepointer.write(str(key)+"\n")
 
 if __name__=="__main__":
 	if "-f" in sys.argv :
@@ -71,11 +74,20 @@ if __name__=="__main__":
 	fileContent = getFileByLine(file)
 	data = parseCSV(fileContent, True)
 	
-	data = faireTraitements(data, True)
+	data = faireTraitements(data)
 	
 	monDic = creationListeMots(data)
-	monDic = gardeLesPetitsMots(monDic, n)
+	if "--small" in sys.argv :
+		monDic = gardeLesPetitsMots(monDic, n)
 	
 	monDic = OrderedDict(sorted(monDic.items(), key=lambda t: t[1]))
 	
-	writeDic(monDic, "monDicDeMotsInutile"+maSuperExtension)
+	if "--ortho" in sys.argv :
+		from medicalTerms import *
+		medTerms = parseMedicalTerms(sys.argv[sys.argv.index("--ortho")+1], 5, printProgress=True)
+		monDic = buildSubstitutionTable(medTerms, list(monDic.keys()))
+	
+	if "-o" in sys.argv :
+		writeDic(monDic, sys.argv[sys.argv.index("-o")+1], not "--list" in sys.argv)
+	else:
+		writeDic(monDic, "monDicDeMotsInutile"+maSuperExtension, not "--list" in sys.argv)

@@ -11,20 +11,21 @@ def faireTraitements(data, useDico=None):
 	
 	if useDico != None:
 		print("Correcting mistakes")
-		#import pdb
-		#pdb.set_trace()
+		corrCount=0
 		for i in range(len(data2)):
 			buf=""
 			sentence = data2[i][0].split()
 			for j in range(len(sentence)):
 				try:
 					buf+=" "+useDico[sentence[j]]
+					corrCount +=1
 				except KeyError:
 					buf+=" "+sentence[j]
 			buf.strip()
 			data2[i]=(buf, data2[i][1], data2[i][2])
 			print(progressBar(i, len(data2), 50), end="\r")
 		print(" "*50, end="\r")
+		print(str(corrCount)+" corrections applied")
 		
 	return data2
 
@@ -55,10 +56,13 @@ def basicTreatments(line):
 		
 	return line
 
-def useDicoFct(data):
-	medicalTerms = parseMedicalTerms("medicalTerms", 5)
-	
-	return buildSubstitutionTable(medicalTerms, data,{},95,5) 
+def useDicoFct(data, pathToSubTable):
+	lexicon = {}
+	with open(pathToSubTable, "r") as f:
+		for l in  f.readlines():
+			ls = l.split(":")
+			lexicon[ls[0].strip()] = ls[1].strip()
+	return lexicon
 
 def supressionMotsInutiles(line):
 	motsInutiles = ["le", "la", "les", "du", "de", "des", "au", "aux", "a", "avec", "et", "en", "l", "un", "une", "c"]
