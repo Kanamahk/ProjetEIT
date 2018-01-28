@@ -2,15 +2,26 @@
 
 import sys
 
-if len(sys.argv) != 3 :
+'''
+if "-s" in sys.argv :
+	save = True
+	fileName = sys.argv[sys.argv.index("-s")+1]
+else:
+	save = False
+	fileName = "resultats.txt"
+'''
+
+if len(sys.argv) != 4 :
 	print("Produces statistics from Wapiti outputs")
-	print("Usage: "+sys.argv[0]+" <original labeled file> <machine-labeled file>")
+	print("Usage: "+sys.argv[0]+" <original labeled file> <machine-labeled file> <string to write>")
 	sys.exit(1)
 
 with open(sys.argv[1]) as o:
 	original = o.readlines()
 with open(sys.argv[2]) as m:
 	machine = m.readlines()
+
+addStringToWrite = sys.argv[3]
 	
 # should be unneeded, but we can't trust the upstream too much
 # removes empty cells (lines)
@@ -91,6 +102,16 @@ averages[0] /= len(stats)
 averages[1] /= len(stats)
 averages[2] /= len(stats)
 
-print("total error rate : "+str(averages[0]*100))
-print("total precision : "+str(averages[1]*100))
-print("total recall : "+str(averages[2]*100))# You are not you, you are me.
+errorRate = averages[0]*100
+precision = averages[1]*100
+recall = averages[2]*100
+
+print("total error rate : "+str(errorRate))
+print("total precision : "+str(precision))
+print("total recall : "+str(recall))# You are not you, you are me.
+
+with open("resultats.txt", "a") as filepointer:
+	filepointer.write(addStringToWrite + "\ntotal error rate : "+str(errorRate) + " ; total precision : "+str(precision) + " ; total recall : "+str(recall) + "\n")
+
+
+

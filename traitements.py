@@ -49,6 +49,7 @@ def basicTreatments(line):
 		line = re.sub("[îï]", 'i', line)
 		line = re.sub("[ôö]", 'o', line)
 		line = re.sub("[àâ]", 'a', line)
+		line = re.sub("[üù]", 'u', line)
 		line = re.sub("ç", 'c', line)
 		line = re.sub("[œ]", 'oe', line)
 		

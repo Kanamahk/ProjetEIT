@@ -20,7 +20,7 @@ if __name__=="__main__":
 		modelName = "modelUcode"
 		
 	if "-m" in sys.argv :
-		model = sys.argv[sys.argv.index("-t")+1]
+		model = sys.argv[sys.argv.index("-m")+1]
 		dictTag = parseModel(model)
 	else:
 		dictTag = {}
@@ -38,6 +38,11 @@ if __name__=="__main__":
 	else:
 		#evalFile = "../CLEFeHealth2017Task1_training_FR1/corpus/train/AlignedCauses_2006-2012full.csv"
 		evalFile = "../CLEFeHealth2017Task1_training_FR1/corpus/train/eval.csv"
+	
+	if "-esc" in sys.argv :
+		esc = True
+	else :
+		esc = False
 	
 	if "-ngramW" in sys.argv :
 		ngramW = int(sys.argv[sys.argv.index("-ngramW")+1])
@@ -60,12 +65,13 @@ if __name__=="__main__":
 		codeSimplifie = True
 	else :
 		codeSimplifie = False
+		
 	
 	trainFileContent = getFileByLine(trainFile)
 	evalFileContent = getFileByLine(evalFile)
 
-	trainData = parseCSV(trainFileContent, codeSimplifie)
-	evalData = parseCSV(evalFileContent, codeSimplifie)
+	trainData = parseCSV(trainFileContent, codeSimplifie, False)
+	evalData = parseCSV(evalFileContent, codeSimplifie, esc)
 
 	if "-dico" in sys.argv :
 		useDico = useDicoFct(trainData+evalData, sys.argv[sys.argv.index("-dico")+1])
@@ -77,8 +83,8 @@ if __name__=="__main__":
 	evalDataParsed = dataToUlist(evalData, dictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese)
 
 	
-	writeFile(trainDataParsed, "trainData"+maSuperExtension)
-	writeFile(evalDataParsed, "evalData"+maSuperExtension)
+	writeFile(trainDataParsed, "trainData"+maSuperExtension, False)
+	writeFile(evalDataParsed, "evalData"+maSuperExtension, esc)
 	
 	if save : 
 		writeModel(dictTag, modelName+maSuperExtension)

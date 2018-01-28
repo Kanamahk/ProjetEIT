@@ -13,15 +13,17 @@ def getFileByLine(fileName):
 	file_pointer.close()
 	return contents
 
-def parseCSV(fichier, boolCodeSimplifie):
+def parseCSV(fichier, boolCodeSimplifie, fichierSansCode):
 	reader = csv.reader(fichier, delimiter=";")
 	tokens=[]
 	for row in reader:
-	
-		label = row[-1]
-		if boolCodeSimplifie:
-			if len(label) > 3:	
-				label = label[:3]
+		if fichierSansCode:
+			label = ""
+		else:
+			label = row[-1]
+			if boolCodeSimplifie:
+				if len(label) > 3:	
+					label = label[:3]
 		
 		estEnfant = row[3] == 0
 			
@@ -43,7 +45,8 @@ retourne un dictionnaire prenant en cle un code et en element une liste des elem
 def dataToUlist(data, DictTag, ngramW, ngramCTraitement, ngramC, useDico, useParenthese):
 	tupleList = []
 	
-	data = faireTraitements(data, useDico)
+	if False:
+		data = faireTraitements(data, useDico)
 	
 	for line in data:
 		listeTag = []
@@ -123,12 +126,13 @@ def parenthese(causes, DictTag):
 				liste.append(DictTag[word+"_PARENTHESE"])
 	return liste
 	
-def writeFile(trainTupleList, filename):
+def writeFile(trainTupleList, filename, fichierSansCode):
 	with open(filename, "w+") as filepointer:
 		for Tuple in trainTupleList:
 			for ucode in Tuple[1]:
 				filepointer.write(str(ucode) + " ")
-			filepointer.write(str(Tuple[0] if not Tuple[0] =='' else "NULL") +"\n")
+			if not fichierSansCode:	
+				filepointer.write(str(Tuple[0] if not Tuple[0] =='' else "NULL") +"\n")
 
 def writeModel(DictTag, filename):
 	with open(filename, "w+") as filepointer:
